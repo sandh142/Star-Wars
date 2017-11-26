@@ -1,0 +1,252 @@
+<!Doctype html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css">
+<script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
+<script src="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
+<script type="text/javascript" src="http://maps.google.com/maps/api/js?v=3&sensor=false&language=en"></script>
+
+<script>
+	  $(function() {
+   var p = [];
+   $.getJSON('pts2.json', function(data) {
+       $.each(data.planets, function(i, p) {
+          var PRecord = "<tr>" + "<td>" + p.name + "</td>" +
+           "<td>" + p.rotation_period + "</td>" + "<td>" + p.orbital_period + "</td>" + "<td>" + p.diameter + 
+		   "</td>" + "<td>" + p.climate + "</td>" + "<td>" + p.gravity + "</td>" + "<td>" + p.terrain + "</td>"
+	       + "<td>" + p.surface_water + "</td>" + "<td>" + p.population + "</td>" + "<td>" + p.residents + "</td>" +
+		   "<td>" + p.films + "</td>" + "<td>" + p.created + "</td>" + "<td>" + p.edited + "</td>" + 
+           "<td>" + p.url + "</td>" + "</tr>"
+           $(PRecord).appendTo("#planetsInformation tbody");
+     });
+	 });
+});	
+</script>
+
+<script>
+  $(document).on("pagecreate","#page6",function() {
+   var ctx = document.getElementById("chart").getContext("2d");
+  var jsonData = $.ajax({
+    url: "pts2.json",
+    dataType: "json",
+  }).done(function () {
+    var labels = [], data=[];
+    var tempData = {
+       labels: ["Rotation Period", "Orbital Period", "Gravity", "Surface Water"],
+    datasets: [
+      {
+        label: "Utapau",
+		fill: true,
+		backgroundColor: "blue",
+        borderColor: "red",
+        data: [27, 351, 1, 0.9]
+      },
+      {
+        label: "Mustafar",
+        fill: true,
+		backgroundColor: "red",
+        borderColor: "blue",
+        data: [36, 412, 1, 0]
+      },
+	  {
+        label: "Kashyyyk",
+        fill: true,
+		backgroundColor: "yellow",
+        borderColor: "brown",
+        data: [26, 381, 1, 60]
+      },
+	  {
+        label: "Polis Massa",
+        fill: true,
+		backgroundColor: "pink",
+        borderColor: "aqua",
+        data: [24, 590, 0.56, 0]
+      },
+	  {
+        label: "Mygeeto",
+        fill: true,
+		backgroundColor: "green",
+        borderColor: "blue",
+        data: [12, 167, 1, ]
+      },
+	  {
+        label: "Felucia",
+        fill: true,
+		backgroundColor: "black",
+        borderColor: "white",
+        data: [34, 231, 0.75, ]
+      },
+	  {
+        label: "Cato Neimoidia",
+        fill: true,
+		backgroundColor: "grey",
+        borderColor: "black",
+        data: [25, 278, 1, ]
+      },
+	  {
+        label: "Saleucami",
+        fill: true,
+		backgroundColor: "aqua",
+        borderColor: "lightblue",
+        data: [26, 392, , ]
+      },
+	  {
+        label: "Stewjon",
+        fill: true,
+		backgroundColor: "indigo",
+        borderColor: "orange",
+        data: [ , , 1, ]
+      },
+	  {
+        label: "Eriadu",
+        fill: true,
+		backgroundColor: "lightgreen",
+        borderColor: "maroon",
+        data: [ 24, 360, 1, ]
+      }]};
+ var myLineChart = new Chart(ctx, {
+ type: "bar",
+ data: tempData,
+});
+  });
+});
+	</script>
+
+		<script>
+		navigator.geolocation.getCurrentPosition(function(pos){
+		 var lat= pos.coords.latitude;
+		 var lng = pos.coords.longitude;		 
+		 mapCenter = new google.maps.LatLng(lat,lng);
+         var mapOptions = {
+		         center:mapCenter,
+				 zoom:20,
+				 mapTypeId:google.maps.MapTypeId.HYBRID
+		 };         
+        var map = new google.maps.Map(document.getElementById("map_canvas"),mapOptions);
+		var myLoc = new google.maps.Marker({
+		  map:map,
+		  animation:google.maps.Animation.DROP,
+		  position:mapCenter
+		});
+		var info = new google.maps.InfoWindow({
+		content: "Where am I?"
+		});
+	});
+		</script>
+</head>
+<body>
+<div data-role="page" data-theme="b" id="page1" style="background-image: url(images/sky.jpg)">
+  <div data-role="main" class="ui-content" style="height:550px;">
+    <a href="#page2" class="ui-btn" data-transition="slide" style="font-family: cursive; background-color: transparent; border: transparent;">
+	   <p style="font-size: 35px;">The following is a movie project on the "Star Wars" series.<br>
+	   All the characters here are fictional and none of the animals<br>were harmed during the film.
+	   This project has been made by<br>Simranjeet Singh Sandhu, Paramjeet Singh Maan and Muhammad<br>Tauseef.
+	   Simranjeet developed the textual display of the details<br>from the film, Paramjeet did the graphical
+	   representation<br>of the whole data and Muhammad described the data through<br>Google Maps using user's
+	   current location.<br>This would be a fun ride. Let's begin!!</p>
+	   <p style="font-size: 20px;">(Please Click Anywhere Above To Proceed.)</p></a>
+  </div>
+  <div data-role="footer" style="background-color: transparent; border-left-color:transparent; border-right-color:transparent; border-top-color:white; border-bottom-color:transparent;">
+    <h1><a href="http://swapi.co/api/" class="ui-btn ui-icon-arrow-r ui-btn-icon-right" style="font-family: cursive; font-size: 10px;">Link To SWAPI</a></h1>
+  </div>
+</div>
+
+<div data-role="page" data-theme="a|b" style="background-color: black;" id="page2">
+  <div data-role="main" class="ui-content" style="font-size: 30px;">
+    <a href="#page3" class="ui-btn" data-transition="flip" style="background-color: white; font-family: cursive; font-size: 90px;">Revenge Of The Sith
+	   <p style="font-size: 45px;">(Episode No. 3 From The Star Wars Series.)</p>
+	   <p style="font-size: 45px;">(Please Click Here To Proceed.)</p></a>
+  </div>
+</div>
+
+<div data-role="page" data-theme="b" id="page3" style="background-image: url(images/sky.jpg)">
+  <div data-role="main" class="ui-content">
+    <a href="#page4" class="ui-btn" data-transition="slideup" style="background-color: transparent; border: transparent;">
+	   <img src="images/starwars.jpg">
+	   <p style="font-size: 31px;">(Please Click Here To Proceed.)</p></a>
+  </div>
+</div>
+
+
+<div data-role="page" data-theme="b" id="page4">
+  <div data-role="header">
+  <h1 style="font-family: cursive; font-size: 30px;">Revenge Of The Sith</h1>
+  </div>
+  <div data-role="main" class="ui-content" style="height: 395px; font-size: 30px; background-color: white; color: maroon;">
+    <a href="#page5" class="ui-btn ui-icon-arrow-r ui-btn-icon-right" data-transition="slide" style="font-family: cursive; font-size: 25px;">Details About The Planets
+	   <p style="font-size: 15px;">(Describing the planets and the residents in the film.)</p></a>
+	<a href="#page6" class="ui-btn ui-icon-arrow-r ui-btn-icon-right" data-transition="slide" style="font-family: cursive; font-size: 25px;">Graphical representation Of Planets
+	   <p style="font-size: 15px;">(Describing the details in the graphyical form like charts, graphs and many more.)</p></a>
+	<a href="#page7" class="ui-btn ui-icon-arrow-r ui-btn-icon-right" data-transition="slide" style="font-family: cursive; font-size: 25px;">View It Geographically
+	   <p style="font-size: 15px;">(Describing the details with location of the planets through google maps.)</p></a>
+  </div>
+  <div data-role="footer">
+    <h1><a href="http://swapi.co/api/planets/" class="ui-btn ui-icon-arrow-r ui-btn-icon-right" style="font-family: cursive; font-size: 25px;">Link To SWAPI</a></h1>
+  </div>
+</div>
+
+<div data-role="page" data-theme="b" id="page5">
+  <div data-role="header">
+  <h1 style="font-family: cursive; font-size: 30px;">Revenge Of The Sith</h1>
+  </div>
+  <div data-role="main" class="ui-content" style="height: 850px; font-size: 13px; background-color: white; color: maroon;">
+    <div id="textualDisplay">
+				<table  id = "planetsInformation" data-role="table" data-filter="true" class="ui-responsive" data-mode="reflow">
+				<thead>
+					<tr>
+							<th data-priority="1">Name</th>
+							<th data-priority="2">Rotation Period</th>
+							<th data-priority="3">Orbital Period</th>
+							<th data-priority="4">Diameter</th>
+							<th data-priority="5">Climate</th>
+							<th data-priority="6">Gravity</th>
+							<th data-priority="7">Terrain</th>
+							<th data-priority="8">Surface Water</th>
+							<th data-priority="9">Population</th>
+							<th data-priority="10">Residents</th>	
+							<th data-priority="11">Films</th>
+							<th data-priority="12">Created</th>
+							<th data-priority="13">Edited</th>
+							<th data-priority="14">URL</th>
+					</tr>
+				</thead>
+		      <tbody id="output"></tbody>
+			</table>	
+			</div>
+  </div>
+  <div data-role="footer">
+    <h1><a href="#page4" class="ui-btn ui-icon-arrow-l ui-btn-icon-left" style="font-family: cursive; font-size: 25px;">Go Back To Home</a>
+	    <a href="http://swapi.co/api/planets/" class="ui-btn ui-icon-arrow-r ui-btn-icon-right" style="font-family: cursive; font-size: 25px;">Link To SWAPI</a></h1>
+  </div>
+</div>
+
+<div data-role="page" data-theme="b" id="page6">
+  <div data-role="header">
+  <h1 style="font-family: cursive; font-size: 30px;">Revenge Of The Sith</h1>
+  </div>
+  <div data-role="main" class="ui-content" style="height: 1350px; background-color: white; color: maroon;">
+   <canvas id="chart" width="100" height="100"></canvas>
+  </div>
+  <div data-role="footer">
+    <h1><a href="#page4" class="ui-btn ui-icon-arrow-l ui-btn-icon-left" style="font-family: cursive; font-size: 25px;">Go Back To Home</a>
+	    <a href="http://swapi.co/api/planets/" class="ui-btn ui-icon-arrow-r ui-btn-icon-right" style="font-family: cursive; font-size: 25px;">Link To SWAPI</a></h1>
+  </div>
+</div>
+
+<div data-role="page" data-theme="b" id="page7">
+  <div data-role="header">
+  <h1 style="font-family: cursive; font-size: 30px;">Revenge Of The Sith</h1>
+  </div>
+  <div data-role="main" class="ui-content" id="map_canvas" style="height: 500px; width: 1310px; color: maroon;">
+   <p id ="lat"></p>
+	<p id ="lng"></p>
+  </div>
+  <div data-role="footer">
+    <h1><a href="#page4" class="ui-btn ui-icon-arrow-l ui-btn-icon-left" style="font-family: cursive; font-size: 25px;">Go Back To Home</a>
+	    <a href="http://swapi.co/api/planets/" class="ui-btn ui-icon-arrow-r ui-btn-icon-right" style="font-family: cursive; font-size: 25px;">Link To SWAPI</a></h1>
+  </div>
+</div>
+</body>
+</html>
